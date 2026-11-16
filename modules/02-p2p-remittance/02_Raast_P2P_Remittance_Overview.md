@@ -4,6 +4,10 @@ Read [Module 1 — Raast P2P Payment](../01-p2p/01_Raast_P2P_Payment_Overview.md
 
 A normal P2P payment uses transaction type **001**. A remittance uses transaction type **005**. With 005, the payment also says which institution sent the money, which country it came from, and how foreign currency was converted into the rupee credit. The beneficiary bank uses those facts when it posts the credit. The sending bank uses them to support the electronic proceeds realization certificate (e-PRC).
 
+## Watch the flows
+
+[Raast P2P Remittance Flows](Raast_P2P_Remittance_Flows.mp4) is a short visual walkthrough of this module. Watch it before the sections below. The written flow is the same story.
+
 ## Learning objectives
 
 By the end of this module, a new technical employee should be able to:
