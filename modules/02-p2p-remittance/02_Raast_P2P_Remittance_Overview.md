@@ -6,7 +6,9 @@ A normal P2P payment uses transaction type **001**. A remittance uses transactio
 
 ## Watch the flows
 
-[Raast P2P Remittance Flows](Raast_P2P_Remittance_Flows.mp4) is a short visual walkthrough of this module. Watch it before the sections below. The written flow is the same story.
+[![Raast P2P Remittance Flows](Raast_P2P_Remittance_Flows.jpg)](Raast_P2P_Remittance_Flows.mp4)
+
+Select the picture to play Raast P2P Remittance Flows. It is a short visual walkthrough of this module. Watch it before the sections below. The written flow is the same story.
 
 ## Learning objectives
 

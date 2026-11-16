@@ -2,7 +2,7 @@
 
 Technical training material for new engineers learning Raast, beginning with P2P payments. The intended audience includes engineering, DevOps, application reliability, and operations teams.
 
-This public library contains the P2P overview, a P2P remittance overview adapted from that same flow, and a structure for future modules. Quiz source files and the answer key are held in a separate private maintainer repository.
+This public library contains the P2P overview, a P2P remittance overview adapted from that same flow, an alias-management overview of how a Raast ID is registered and moved between accounts, and a structure for future modules. Quiz source files and the answer key are held in a separate private maintainer repository.
 
 ## Start here
 
@@ -25,7 +25,7 @@ The overview is preserved unchanged from the supplied training package. Quiz sou
 | [Bulk Payments](modules/05-bulk-payments/README.md) | Planned |
 | [Title Fetch 2.0](modules/06-title-fetch-2/README.md) | Planned |
 | [Title Fetch 2.0 Bulk](modules/07-title-fetch-2-bulk/README.md) | Planned |
-| [Alias Management](modules/08-alias-management/README.md) | Planned |
+| [Alias Management](modules/08-alias-management/README.md) | Overview and [flow video](modules/08-alias-management/Raast_Alias_Management_Flows.mp4) available; how a Raast ID is registered and moved from one account to another |
 | [Limit Management](modules/09-limit-management/README.md) | Planned |
 | [PISP](modules/10-pisp/README.md) | Planned |
 | [PayPak POS](modules/11-paypak-pos/README.md) | Planned |

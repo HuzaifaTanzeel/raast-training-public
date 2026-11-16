@@ -1,5 +1,9 @@
 # Alias Management
 
-Status: Planned. Training content and detailed specifications are pending validation by the material owner.
+Read the [Alias Management Overview](08_Raast_Alias_Management_Overview.md), including embedded Mermaid sequence diagrams.
 
-Add the overview, quiz, and answer key when validated material is available. No message specifications are defined by this placeholder.
+[![Raast Alias Management Flows](Raast_Alias_Management_Flows.jpg)](Raast_Alias_Management_Flows.mp4)
+
+Select the picture to play Raast Alias Management Flows, a visual walkthrough of the same flows.
+
+No separate interactive assessment is published for this module yet. Ask your instructor if an assessment is assigned. Quiz source files and answer keys are not part of this public repository.
