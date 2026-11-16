@@ -19,7 +19,7 @@ The overview is preserved unchanged from the supplied training package. Quiz sou
 | Module | Material status |
 | --- | --- |
 | [P2P Payments](modules/01-p2p/README.md) | Overview available; assessment hosted separately |
-| [P2P Remittance](modules/02-p2p-remittance/README.md) | Overview available; same discovery and payment flow as P2P, with remittance wording |
+| [P2P Remittance](modules/02-p2p-remittance/README.md) | Overview available; same P2P discovery and payment flow, marked as transaction type 005 |
 | [P2M Issuing](modules/03-p2m-issuing/README.md) | Planned |
 | [P2M Acquiring](modules/04-p2m-acquiring/README.md) | Planned |
 | [Bulk Payments](modules/05-bulk-payments/README.md) | Planned |
