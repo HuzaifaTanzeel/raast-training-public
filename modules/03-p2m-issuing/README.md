@@ -1,5 +1,7 @@
 # P2M Issuing
 
-Status: Planned. Training content and detailed specifications are pending validation by the material owner.
+Read the [P2M Issuing Overview](03_Raast_P2M_Issuing_Overview.md), including embedded Mermaid sequence diagrams.
 
-Add the overview, quiz, and answer key when validated material is available. No message specifications are defined by this placeholder.
+This is the customer's bank paying a merchant. The customer's bank keeps the debit, and Paysys posts the payment to Raast.
+
+No separate interactive assessment is published for this module yet. Ask your instructor if an assessment is assigned. Quiz source files and answer keys are not part of this public repository.
