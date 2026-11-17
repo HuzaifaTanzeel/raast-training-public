@@ -6,8 +6,6 @@ A bank that uses Paysys does not post the batch straight to Raast. The bank's ch
 
 One batch goes to one receiving institution. A file for two receiving banks becomes two batches, and each batch is pre-validated and paid on its own. The same batch identity is used for the pre-validation and for the payment, so the two steps stay tied together.
 
-Receiving the other side of a batch is covered in [Bulk Receiving](05_Raast_Bulk_Receiving_Overview.md).
-
 ## Learning objectives
 
 By the end of this module, a new technical employee should be able to:

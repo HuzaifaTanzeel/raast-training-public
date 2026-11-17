@@ -2,7 +2,7 @@
 
 Technical training material for new engineers learning Raast, beginning with P2P payments. The intended audience includes engineering, DevOps, application reliability, and operations teams.
 
-This public library contains the P2P overview, a P2P remittance overview adapted from that same flow, an alias-management overview of how a Raast ID is registered and moved between accounts, bulk sending and receiving overviews for a payment batch, and a structure for future modules. Quiz source files and the answer key are held in a separate private maintainer repository.
+This public library contains the P2P overview, a P2P remittance overview adapted from that same flow, an alias-management overview of how a Raast ID is registered and moved between accounts, a bulk sending overview for a payment batch, and a structure for future modules. Quiz source files and the answer key are held in a separate private maintainer repository.
 
 ## Start here
 
@@ -22,7 +22,7 @@ The overview is preserved unchanged from the supplied training package. Quiz sou
 | [P2P Remittance](modules/02-p2p-remittance/README.md) | Overview and [flow video](modules/02-p2p-remittance/Raast_P2P_Remittance_Flows.mp4) available; same P2P discovery and payment flow, marked as transaction type 005 |
 | [P2M Issuing](modules/03-p2m-issuing/README.md) | Planned |
 | [P2M Acquiring](modules/04-p2m-acquiring/README.md) | Planned |
-| [Bulk Payments](modules/05-bulk-payments/README.md) | Sending and receiving overviews available; how a batch is checked, sent, and credited |
+| [Bulk Payments](modules/05-bulk-payments/README.md) | Sending overview available; how a batch is checked and sent. Receiving is planned |
 | [Title Fetch 2.0](modules/06-title-fetch-2/README.md) | Planned |
 | [Title Fetch 2.0 Bulk](modules/07-title-fetch-2-bulk/README.md) | Planned |
 | [Alias Management](modules/08-alias-management/README.md) | Overview and [flow video](modules/08-alias-management/Raast_Alias_Management_Flows.mp4) available; how a Raast ID is registered and moved from one account to another |
