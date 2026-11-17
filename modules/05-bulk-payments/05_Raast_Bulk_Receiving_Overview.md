@@ -87,7 +87,7 @@ The fetch and the credit are separate. The bank collects `pacs.008` from Raast, 
 ## 4. End-to-end mental model
 
 ```mermaid
-flowchart TD
+flowchart LR
     A[Raast brings batch work<br/>to this bank] --> B{What arrived?}
     B -->|Check or inquiry| C[Ask the account system]
     C --> D[Reply to Raast]

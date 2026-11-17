@@ -182,7 +182,7 @@ sequenceDiagram
 ## 6. End-to-end mental model
 
 ```mermaid
-flowchart TD
+flowchart LR
     A[One batch for one<br/>receiving bank] --> B[Channel pre-validates<br/>through Paysys]
     B --> C[Paysys accepts,<br/>then Raast checks]
     C --> D[Channel receives<br/>the failed accounts]

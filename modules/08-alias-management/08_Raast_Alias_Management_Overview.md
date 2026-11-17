@@ -214,7 +214,7 @@ sequenceDiagram
 Follow the alias. The next step depends on whether the mobile number is already a Raast ID, whether an account currently holds it, and whether this account is already on file.
 
 ```mermaid
-flowchart TD
+flowchart LR
     A[Customer wants this Raast ID<br/>on an account] --> B{Is this mobile already<br/>a Raast ID?}
     B -->|No| C[Register customer, alias,<br/>and account together]
     C --> Z[This account holds the Raast ID]
