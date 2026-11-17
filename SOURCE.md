@@ -4,6 +4,8 @@ The P2P overview was imported unchanged from the owner's `Raast_P2P_Module_1_Tra
 
 The Alias Management overview in `modules/08-alias-management/` follows the supplied two-bank walkthrough of how a Raast ID is registered and moved. It keeps the customer story and the CAS steps a new joiner needs. It does not reproduce API paths, hosts, credentials, or test-case data.
 
+The Bulk Payments overviews in `modules/05-bulk-payments/` follow the supplied bulk sending and receiving deck. Sending covers pre-validation, posting the batch, collecting the result, and delivering replies to the channel. Receiving covers an incoming check and an incoming credit. The overviews do not reproduce internal services, database tables, or queries.
+
 The remaining modules are planning placeholders. This publication does not independently certify current Raast protocol specifications.
 
 Assessment files are maintained in a private repository and are not part of this public repository's source or history.
