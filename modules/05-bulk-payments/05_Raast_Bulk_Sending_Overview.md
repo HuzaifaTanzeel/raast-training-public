@@ -1,170 +1,227 @@
 # Module 5 — Raast Bulk Sending: An Overview
 
-Read [Module 1 — Raast P2P Payment](../01-p2p/01_Raast_P2P_Payment_Overview.md) first. That module is one payment: the bank sends `pacs.008`, then learns the result. Bulk sending is that same payment, submitted many times together as one batch.
+Read [Module 1 — Raast P2P Payment](../01-p2p/01_Raast_P2P_Payment_Overview.md) first. That module is one payment. Bulk sending is many payments submitted together: salaries, pensions, dividends, or other corporate payments.
 
-The channel is the bank system that hands the batch over. A batch can carry person-to-person payments or person-to-merchant payments. This module follows the batch. Receiving the other side of a batch is covered in [Bulk Receiving](05_Raast_Bulk_Receiving_Overview.md).
+A bank that uses Paysys does not post the batch straight to Raast. The bank's channel calls Paysys. Paysys accepts the call, posts the batch to Raast, and later brings Raast's answers back to the channel.
+
+One batch goes to one receiving institution. A file for two receiving banks becomes two batches, and each batch is pre-validated and paid on its own. The same batch identity is used for the pre-validation and for the payment, so the two steps stay tied together.
+
+Receiving the other side of a batch is covered in [Bulk Receiving](05_Raast_Bulk_Receiving_Overview.md).
 
 ## Learning objectives
 
 By the end of this module, a new technical employee should be able to:
 
-- Explain a bulk batch as many payments submitted together by a channel.
-- Describe pre-validation, and why the channel receives that reply after the bank has stored it.
-- Describe posting `pacs.008`, and why Raast's first acknowledgement still leaves the final result to be collected.
-- Describe how the bank collects `pacs.002` as accepted (`ACSP`) or rejected (`RJCT`).
-- Describe how the end-to-end reply, and a return, reach the channel.
+- Explain where the bank channel, Paysys, Raast, and the receiving bank sit in a bulk batch.
+- Describe pre-validation, including the immediate acceptance and the later result.
+- Describe how a payment is posted with `pacs.008`, and when the receiving bank starts crediting.
+- Explain why a failed credit comes back as a return payment, and why that is the message that refunds the sender.
+- Explain the end-to-end message as the status of every account, and when a payment inquiry is used.
 
 ---
 
 ## 1. What bulk sending is
 
-A channel prepares a batch: many beneficiaries, one submission. The sending bank checks that batch, sends it to Raast, and brings each answer back to the channel.
+The channel prepares the batch. Paysys is the Open Connect service that carries it. Raast clears it with the receiving bank.
 
-Raast answers the batch in separate steps. The bank stores each answer, then delivers it.
+Raast answers in separate messages. Paysys accepts the channel's call first, then forwards each later answer.
 
-> **Pre-validation answers: “Which items in this batch can be paid?”**  
-> **The payment answers: “Did Raast accept each payment?”**
+> **Pre-validation answers: “Which accounts in this batch can be paid?”**  
+> **The payment answers: “Credit those accounts, and tell the sender what happened.”**
 
-`pacs.008`, `pacs.002/ACSP`, `pacs.002/RJCT`, and `pacs.004` mean the same thing here as in Module 1 and the remittance module. What changes is that the channel waits while the bank stores the reply and delivers it.
+`pacs.008`, `pacs.002`, and `pacs.004` are the same message names as in Module 1. In this module they travel as a batch, with Paysys between the channel and Raast.
 
 ---
 
 ## 2. Pre-validation
 
-Before the money moves, the channel asks the bank to check the batch. The bank rejects a duplicate batch, then sends the pre-validation to Raast.
+The channel sends the batch to Paysys for a title check of every account. Paysys checks the call and accepts it straight away. That acceptance means Paysys has the batch. It is not the result of the account check.
 
-Raast's reply comes back to the bank. The bank stores it, and a later delivery carries that reply to the channel. The channel reads the reply from that delivery.
+Paysys then sends the pre-validation to Raast. Raast forwards it to the receiving bank. The receiving bank checks each account and returns the status. Raast passes that result to Paysys, and Paysys calls the channel.
 
-```mermaid
-sequenceDiagram
-    autonumber
-    participant C as Channel
-    participant B as Sending Bank
-    participant R as Raast
-
-    C->>B: Check this batch
-    B->>B: Reject a duplicate batch
-    B->>R: Pre-validation request
-    R-->>B: Pre-validation reply
-    B->>B: Store the reply
-    B-->>C: Deliver the pre-validation reply
-```
-
----
-
-## 3. Post the batch
-
-When the channel sends the batch for payment, the bank checks it again, builds `pacs.008`, and posts that payment to Raast.
-
-Raast answers that the payment was received. That acknowledgement means the batch has been posted. The accepted or rejected result is collected in the next step.
+The call to the channel lists the accounts that failed. An empty list means every account passed. The channel leaves the failed accounts out of the payment.
 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant C as Channel
-    participant B as Sending Bank
+    participant C as Bank Channel
+    participant P as Paysys
     participant R as Raast
+    participant BB as Receiving Bank
 
-    C->>B: Pay this batch
-    B->>B: Check the batch<br/>and build pacs.008
-    B->>R: pacs.008<br/>Post the batch
-    R-->>B: Payment received
-    Note over B,R: The batch is posted.<br/>The final result is collected next.
+    C->>P: Pre-validate this batch
+    P-->>C: Accepted
+    P->>R: Pre-validation request
+    R->>BB: Pre-validation request
+    BB->>BB: Check each account
+    BB-->>R: Status of each account
+    R-->>P: Pre-validation result
+    P-->>C: Failed accounts
+    Note over C: An empty list means every account passed.<br/>Failed accounts stay out of the payment.
 ```
 
 ---
 
-## 4. Collect the result
+## 3. Post the payment
 
-The bank asks Raast for the payment result. Raast returns `pacs.002`.
+The channel sends Paysys only the accounts that passed. It completes its own accounting for that amount before the payment call.
 
-- **`ACSP`** — Raast accepted the payment.
-- **`RJCT`** — Raast rejected the payment.
+Paysys accepts the call, builds `pacs.008`, and posts the batch to Raast. Raast acknowledges that post and updates the sender and receiver positions. Raast then sends `pacs.008` to the receiving bank.
 
-The bank stores that result.
+The receiving bank acknowledges the batch. Raast sends that bank `pacs.002` as payment confirmation, and the receiving bank starts crediting the accounts.
+
+If Raast rejects the payment, the sending side receives `pacs.002/RJCT` and the credit does not start.
 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant B as Sending Bank
+    participant C as Bank Channel
+    participant P as Paysys
     participant R as Raast
+    participant BB as Receiving Bank
 
-    B->>R: Collect the payment result
-    R-->>B: pacs.002<br/>ACSP or RJCT
-    B->>B: Store the result
+    Note over C: Only accounts that passed pre-validation
+    C->>P: Pay this batch
+    P-->>C: Accepted
+    P->>R: pacs.008
+    R-->>P: Acknowledged
+    R->>R: Update sender and receiver position
+
+    alt Payment confirmed
+        R->>BB: pacs.008
+        BB-->>R: Acknowledged
+        R-->>BB: pacs.002<br/>Payment confirmation
+        BB->>BB: Credit each account
+    else Payment rejected
+        R-->>P: pacs.002 / RJCT
+        Note over P: Rejection is recorded.<br/>The receiving bank does not credit.
+    end
 ```
 
 ---
 
-## 5. Deliver the end-to-end reply
+## 4. Return a credit that failed
 
-Raast also sends the end-to-end reply to the bank. The bank stores it, then delivers it to the channel. This is the reply the channel keeps for the batch.
+After the receiving bank tries to credit, any account it could not credit is returned with `pacs.004`. Raast reverses the position for that failed amount and sends `pacs.002` to both the sending side and the receiving bank.
+
+Paysys turns that into a return payment and sends it to the channel. The channel refunds those funds and marks the transactions failed.
+
+The return payment is the message that moves the money back. The end-to-end message in the next section can arrive earlier, and it leaves the refund waiting for this return.
 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant C as Channel
-    participant B as Sending Bank
+    participant C as Bank Channel
+    participant P as Paysys
     participant R as Raast
+    participant BB as Receiving Bank
 
-    R-->>B: End-to-end reply
-    B->>B: Store the reply
-    B-->>C: Deliver the end-to-end reply
+    BB->>R: pacs.004<br/>Credits that failed
+    R->>R: Reverse position<br/>for the failed amount
+    par Confirmation to both sides
+        R-->>P: pacs.002
+    and
+        R-->>BB: pacs.002
+    end
+    P-->>C: Return payment
+    C->>C: Refund those funds<br/>and mark them failed
 ```
 
 ---
 
-## 6. When Raast returns a payment
+## 5. End-to-end status
 
-A payment in the batch can be returned with `pacs.004`. The bank treats that return like the other replies from Raast: store it, then deliver it to the channel.
+When the receiving bank finishes the batch, it sends Raast an end-to-end message: the status of every account. Raast sends that message to Paysys. Paysys stores it, acknowledges Raast, and delivers it to the channel.
+
+The channel reconciles each account and marks the batch complete.
+
+| Status | Meaning |
+|---|---|
+| Processed | The account was credited |
+| Returned | The credit was returned |
+| Suspended | The account is still outstanding |
+
+This message reports status. The channel completes the batch from it. A refund still waits for the return payment in section 4, even when this message arrives first.
 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant C as Channel
-    participant B as Sending Bank
+    participant C as Bank Channel
+    participant P as Paysys
     participant R as Raast
+    participant BB as Receiving Bank
 
-    R-->>B: pacs.004<br/>Return a payment in the batch
-    B->>B: Store the return
-    B-->>C: Deliver the return
+    BB->>R: End-to-end status<br/>of every account
+    R-->>P: End-to-end message
+    P->>P: Store it and update<br/>each transaction
+    P-->>R: Acknowledged
+    P-->>C: End-to-end message
+    C->>C: Reconcile the batch<br/>and mark it complete
 ```
 
----
-
-## 7. End-to-end mental model
-
-Read the batch from the channel's point of view. Each arrow below is one of the replies the bank stores and then delivers, except the posted payment and the result the bank collects.
+If the end-to-end message does not arrive, the channel can ask. A payment inquiry goes through Paysys to Raast, and the receiving bank returns the status of one payment or of the whole batch. The inquiry is for a payment batch.
 
 ```mermaid
-flowchart LR
-    A[Channel submits a batch] --> B[Pre-validation]
-    B --> C[Reply stored and<br/>delivered to the channel]
-    C --> D[pacs.008 posted]
-    D --> E[pacs.002 collected<br/>ACSP or RJCT]
-    E --> F[End-to-end reply<br/>delivered to the channel]
-    D -. Return .-> G[pacs.004 delivered<br/>to the channel]
+sequenceDiagram
+    autonumber
+    participant C as Bank Channel
+    participant P as Paysys
+    participant R as Raast
+    participant BB as Receiving Bank
+
+    C->>P: Inquire on this payment
+    P->>R: Payment inquiry
+    R->>BB: Payment inquiry
+    BB-->>R: Status
+    R-->>P: Status
+    P-->>C: Status
 ```
 
 ---
 
-## 8. Terms that are specific to this module
+## 6. End-to-end mental model
 
-Shared terms such as `pacs.008`, `pacs.002/ACSP`, `pacs.002/RJCT`, and `pacs.004` are defined in Module 1 and the remittance module.
+```mermaid
+flowchart TD
+    A[One batch for one<br/>receiving bank] --> B[Channel pre-validates<br/>through Paysys]
+    B --> C[Paysys accepts,<br/>then Raast checks]
+    C --> D[Channel receives<br/>the failed accounts]
+    D --> E[Channel pays the<br/>accounts that passed]
+    E --> F[Paysys posts pacs.008]
+    F --> G{Raast confirms<br/>the payment?}
+    G -->|RJCT| H[Credit does not start]
+    G -->|Confirmed| I[Receiving bank credits]
+    I --> J{Any credit failed?}
+    J -->|Yes| K[Return payment<br/>Channel refunds those funds]
+    J -->|No| L[End-to-end status]
+    K --> L
+    L --> M[Channel reconciles<br/>and completes the batch]
+    F -. End-to-end missing .-> N[Payment inquiry]
+```
+
+---
+
+## 7. Terms that are specific to this module
+
+Shared message names are defined in Module 1.
 
 | Term | Meaning in this module |
 |---|---|
-| Batch | Many payments submitted together by a channel |
-| Channel | Bank system that submits the batch and receives the replies |
-| Pre-validation | Check of the batch with Raast before the payment is posted |
-| End-to-end reply | Raast's reply for the posted batch, stored by the bank and delivered to the channel |
+| Channel | Bank system that submits the batch and receives Paysys's replies |
+| Paysys | Open Connect. Accepts the channel's call, posts the batch to Raast, and returns Raast's answers |
+| Batch | Many payments for one receiving institution |
+| Pre-validation | Account check before payment. The channel is told which accounts failed |
+| Return payment | Paysys's delivery of a `pacs.004` credit failure. This is the refund |
+| End-to-end message | Status of every account. Completes the batch |
+| Payment inquiry | Ask the receiving bank for the status of a payment when the end-to-end message has not arrived |
 
 ---
 
-## 9. What to remember
+## 8. What to remember
 
-1. Read **Module 1** for a single payment. Bulk sending repeats that payment across a **batch**.
-2. **Pre-validation** checks the batch. The channel receives the reply after the bank stores it.
-3. Posting **`pacs.008`** gets an acknowledgement that Raast received the batch. The final result is still to be collected.
-4. The bank collects **`pacs.002`** as **`ACSP`** or **`RJCT`**.
-5. The **end-to-end reply**, and a **`pacs.004` return**, are stored and then delivered to the channel.
+1. The channel talks to **Paysys**. Paysys posts the batch to **Raast** and brings the answers back.
+2. Paysys **accepts** a pre-validation or a payment immediately. The account check and the credit result arrive later.
+3. Pre-validation returns the **failed accounts**. Those accounts stay out of the payment. One batch is for one receiving bank.
+4. The payment is **`pacs.008`**. The receiving bank starts crediting when Raast confirms it. A rejection is **`pacs.002/RJCT`**.
+5. A credit that fails comes back as a **return payment**. That message is what the channel refunds.
+6. The **end-to-end message** reports Processed, Returned, or Suspended, and completes the batch. It can arrive before the return. If it never arrives, the channel sends a **payment inquiry**.
