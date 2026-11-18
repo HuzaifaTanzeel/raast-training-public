@@ -1,5 +1,7 @@
 # P2M Acquiring
 
-Status: Planned. Training content and detailed specifications are pending validation by the material owner.
+Read the [P2M Acquiring Overview](04_Raast_P2M_Acquiring_Overview.md), including embedded Mermaid sequence diagrams.
 
-Add the overview, quiz, and answer key when validated material is available. No message specifications are defined by this placeholder.
+Read [P2M Issuing](../03-p2m-issuing/03_Raast_P2M_Issuing_Overview.md) first. Issuing is the customer's bank. Acquiring is the merchant's bank.
+
+No separate interactive assessment is published for this module yet. Ask your instructor if an assessment is assigned. Quiz source files and answer keys are not part of this public repository.
