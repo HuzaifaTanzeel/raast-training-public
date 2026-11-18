@@ -10,6 +10,8 @@ The P2M Acquiring overview in `modules/04-p2m-acquiring/` follows the supplied O
 
 The Bulk Sending overview in `modules/05-bulk-payments/` follows the supplied Open Connect bulk-sending specifications. The bank channel calls Paysys, Paysys posts the batch to Raast, and later replies cover failed pre-validation accounts, a return payment, and the end-to-end status. The overview does not reproduce API fields, internal services, or queries. Bulk receiving is a placeholder.
 
+The Title Fetch V2 overview in `modules/06-title-fetch-2/` expands the Module 1 discovery path for a destination bank plus a legacy account number. The payee bank returns the IBAN and the account title, and the payment stays in Module 1. It does not add fields or message schemas beyond that overview. Title Fetch 2.0 Bulk remains a placeholder.
+
 The remaining modules are planning placeholders. This publication does not independently certify current Raast protocol specifications.
 
 Assessment files are maintained in a private repository and are not part of this public repository's source or history.
