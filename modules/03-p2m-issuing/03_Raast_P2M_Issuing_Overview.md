@@ -2,7 +2,7 @@
 
 Read [Module 1 — Raast P2P Payment](../01-p2p/01_Raast_P2P_Payment_Overview.md) first. That module is one person paying another person. P2M issuing is the customer's bank paying a merchant.
 
-This page is direct posting. The customer's bank places the hold and later confirms the debit. Paysys posts the payment to Raast. The merchant's bank is the acquiring side. That side is a later module.
+This page is direct posting. The customer's bank places the hold and later confirms the debit. Paysys posts the payment to Raast. The merchant's bank is covered in [P2M Acquiring](../04-p2m-acquiring/04_Raast_P2M_Acquiring_Overview.md).
 
 A scanned QR that belongs to a person follows Module 1. A merchant QR stays in this module.
 
